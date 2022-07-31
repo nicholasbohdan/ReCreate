@@ -1,24 +1,48 @@
 import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
+import { css } from '@emotion/css';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import Home from './Components/Home';
+
+const client = new ApolloClient({
+  uri: 'https://graphql.anilist.co',
+  cache: new InMemoryCache(),
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <ApolloProvider client={client}>
+        <nav 
+            className={css`
+                width: 100%;
+                margin: 0 auto;
+                text-align: center;
+                max-width: 80%
+            `}
+          >
+          <a
+          className={css`
+              text-decoration: none;
+              color: inherit;
+              padding-right: 4px;
+          `}
+          href="/">AnimeList</a>| 
+          <a
+          className={css`
+              padding-left: 4px;
+              text-decoration: none;
+              color: inherit;
+          `}
+          href="/collection">Collection</a>
+        </nav>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            {/* <Route path='/contact' component={Contact} />
+            <Route path='/about' component={About} /> */}
+        </Routes>
+      </ApolloProvider>
+    </Router>
   );
 }
 

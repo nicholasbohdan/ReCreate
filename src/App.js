@@ -1,8 +1,11 @@
 import logo from './logo.svg';
 import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
-import { css } from '@emotion/css';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
-import Home from './Components/Home';
+import Header from './Components/Header';
+import CollectionList from './Components/Collection/CollectionList';
+import AnimeList from './Components/Anime/AnimeList';
+import AnimeDetail from './Components/Anime/AnimeDetail';
+import CollectionDetail from './Components/Collection/CollectionDetail';
 
 const client = new ApolloClient({
   uri: 'https://graphql.anilist.co',
@@ -13,33 +16,13 @@ function App() {
   return (
     <Router>
       <ApolloProvider client={client}>
-        <nav 
-            className={css`
-                width: 100%;
-                margin: 0 auto;
-                text-align: center;
-                max-width: 80%
-            `}
-          >
-          <a
-          className={css`
-              text-decoration: none;
-              color: inherit;
-              padding-right: 4px;
-          `}
-          href="/">AnimeList</a>| 
-          <a
-          className={css`
-              padding-left: 4px;
-              text-decoration: none;
-              color: inherit;
-          `}
-          href="/collection">Collection</a>
-        </nav>
+        <Header />
         <Routes>
-            <Route path="/" element={<Home />} />
-            {/* <Route path='/contact' component={Contact} />
-            <Route path='/about' component={About} /> */}
+            <Route path="/" element={<AnimeList />} />
+            <Route path="/detail/:animeId" element={<AnimeDetail />} />
+            <Route path="/collection" element={<CollectionList />} />
+            <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />
+            {/* <Route path='/about' component={About} /> */}
         </Routes>
       </ApolloProvider>
     </Router>

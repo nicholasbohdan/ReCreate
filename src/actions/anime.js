@@ -23,7 +23,6 @@ export const GET_ANIME_DATA_LIST = gql`
                   medium
                   color
                 }
-                bannerImage
                 id
                 idMal
                 season
@@ -44,4 +43,127 @@ export const GET_ANIME_DATA_LIST = gql`
         }
   }
 }
+`;
+
+export const GET_ANIME_DATA_DETAIL = gql`
+  query get($id: Int) {
+    Media(id: $id){
+      id
+      idMal
+      title {
+        romaji
+        english
+        native
+        userPreferred
+      }
+      type
+      format
+      status
+      description
+      season
+      seasonYear
+      episodes
+      duration
+      chapters
+      volumes
+      countryOfOrigin
+      hashtag
+      trailer {
+        id
+      }
+      coverImage {
+        extraLarge
+        large
+        medium
+        color
+      }
+      genres
+      popularity
+      averageScore
+      meanScore
+      siteUrl
+      reviews {
+        edges {
+          node {
+            id
+            rating
+            ratingAmount
+            score
+          }
+        }
+      }
+      rankings {
+        id
+        rank
+        type
+        format
+        year
+        season
+        allTime
+        context
+      }
+      characters {
+        edges {
+          id
+          node{
+            name {
+              first
+              middle
+              last
+              full
+              native
+              userPreferred
+            }
+            image {
+              large
+              medium
+            }
+            description
+            gender
+            
+          }
+        }
+      }
+      staff {
+        edges {
+          id
+          node{
+            id
+            name {
+              first
+              middle
+              last
+              full
+              native
+              userPreferred
+            }
+            image {
+              large
+              medium
+            }
+            description
+            gender
+            age
+          }
+        }
+      }
+      studios {
+        edges {
+          id
+          node{
+            id
+            name
+            isAnimationStudio
+            siteUrl
+          }
+        }
+      }
+     }
+}
+`;
+
+export const GET_ALL_GENRES = gql`
+  query get {
+    GenreCollection
+  }
 `;

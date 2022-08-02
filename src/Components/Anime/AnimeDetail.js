@@ -25,7 +25,6 @@ function AnimeDetail(){
             className={css`
                 width: 100%;
                 max-width: 100vw;
-                // height: 100vh;
                 background-color: #1a1a1a;
                 padding-top: 14px;
                 color: white;
@@ -43,6 +42,9 @@ function AnimeDetail(){
                 <>
                 <img
                     className={css`
+                        @media (max-width: 600px) {
+                            width: 100%;
+                        };
                         width: 70%;
                         height: 100%;
                     `}
@@ -50,6 +52,9 @@ function AnimeDetail(){
                 />
                 <div
                     className={css`
+                        @media (max-width: 600px) {
+                            width: 100%;
+                        };
                         width: 70%;
                         padding-top: 14px;
                         height: 100%;
@@ -59,6 +64,10 @@ function AnimeDetail(){
                 >
                     <div
                         className={css`
+                            @media (max-width: 600px) {
+                                display: block;
+                                left: 0px;
+                            };
                             position: relative;
                             z-Index: 1;
                             left: 45px;
@@ -66,18 +75,30 @@ function AnimeDetail(){
                             display: flex;
                         `}
                     >
-                        <img
+                        <div
                             className={css`
-                                position: relative;
-                                float: left;
-                                width: 143px;
-                                height: 200px;
+                                @media (max-width: 600px) {
+                                    display: inline-block;
+                                };
                             `}
-                            src={data?.Media.coverImage.extraLarge}
-                        />
+                        >
+                            <img
+                                className={css`
+                                    position: relative;
+                                    float: left;
+                                    width: 143px;
+                                    height: 200px;
+                                `}
+                                src={data?.Media.coverImage.extraLarge}
+                            />
+                        </div>
                         <div>
                             <div
                                 className={css`
+                                    @media (max-width: 600px) {
+                                        text-align: center;
+                                        margin: 0 auto;
+                                    };
                                     width: 90%;
                                     position: relative;
                                     text-align: left;
@@ -94,6 +115,12 @@ function AnimeDetail(){
                             </div>
                             <div
                                 className={css`
+                                    @media (max-width: 600px) {
+                                        display: flex;
+                                        grid-template-columns: none;
+                                        justify-content: none;
+                                        flex-direction: column;
+                                    };
                                     width: 100%;
                                     position: relative;
                                     text-align: left;
@@ -213,6 +240,12 @@ function AnimeDetail(){
                             </div>
                             <div
                                 className={css`
+                                    @media (max-width: 600px) {
+                                        display: inline-flex;
+                                        justify-content: none;
+                                        padding-left: 0px;
+                                        flex-wrap: wrap;
+                                    };
                                     width: 100%;
                                     position: relative;
                                     text-align: left;
@@ -242,6 +275,9 @@ function AnimeDetail(){
                 </div>
                 <div
                     className={css`
+                        @media (max-width: 600px) {
+                            width: 100%;
+                        };
                         width: 70%;
                         padding-top: 14px;
                         height: 100%;
@@ -285,6 +321,9 @@ function AnimeDetail(){
                 {showPage === 'Sinopsis' ? (
                     <div
                         className={css`
+                            @media (max-width: 600px) {
+                                width: 100%;
+                            };
                             width: 70%;
                             padding-top: 14px;
                             height: 100%;
@@ -295,6 +334,9 @@ function AnimeDetail(){
                         Sinopsis {data?.Media.title.english}
                         <div
                             className={css`
+                                @media (max-width: 600px) {
+                                    width: 100%;
+                                };
                                 width: 90%;
                                 padding-top: 14px;
                                 height: 100%;
@@ -303,13 +345,16 @@ function AnimeDetail(){
                             `}
                         >   
                         {/* {console.log(data?.Media.description.replace(/<br\s*[\/]?>/gi, '\n'))} */}
-                            <span>{data?.Media.description.replace(/<[^>]+>/g, '')}</span>
+                            <span>{data?.Media.description.replace(/<br\s*[\/]?>/gi, '\n')}</span>
                         </div>
                     </div>
                 ) : (
                     showPage === 'Trailer' ? (
                         <div
                             className={css`
+                                @media (max-width: 600px) {
+                                    width: 100%;
+                                };
                                 width: 70%;
                                 padding-top: 14px;
                                 height: 100%;
@@ -331,6 +376,9 @@ function AnimeDetail(){
                     ) : (
                         <div
                             className={css`
+                                @media (max-width: 600px) {
+                                    width: 100%;
+                                };
                                 width: 70%;
                                 padding-top: 14px;
                                 height: 100%;
@@ -342,6 +390,14 @@ function AnimeDetail(){
                             <div>
                                 <ul
                                     className={css`
+                                        @media (max-width: 600px) {
+                                            width: 100%;
+                                            padding: 0px;
+                                            padding-top: 14px;
+                                            max-width: 90%;
+                                            display: grid;
+                                            grid-template-columns: repeat(2, 50%);
+                                        };
                                         width: 70%;
                                         padding-top: 14px;
                                         height: 100%;

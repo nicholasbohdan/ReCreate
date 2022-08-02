@@ -122,6 +122,7 @@ function AnimeDetail(){
                                         flex-direction: column;
                                     };
                                     width: 100%;
+                                    max-width: 85%;
                                     position: relative;
                                     text-align: left;
                                     top: 30px;
@@ -137,7 +138,8 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Status : 
+                                >Status
+                                <span className={css`@media (max-width: 600px) { margin-left: 7.5%; }; margin-left: 15%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -154,7 +156,8 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Type : 
+                                >Type
+                                <span className={css`@media (max-width: 600px) { margin-left: 11%; }; margin-left: 13%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -171,7 +174,8 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Studio : 
+                                >Studio
+                                <span className={css`@media (max-width: 600px) { margin-left: 6.5%; }; margin-left: 14%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -192,7 +196,8 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Episodes : 
+                                >Episodes
+                                <span className={css`@media (max-width: 600px) { margin-left: 2%; }; margin-left: 1%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -209,7 +214,8 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Duration : 
+                                >Duration
+                                <span className={css`@media (max-width: 600px) { margin-left: 1.5%; }; margin-left: 7%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -226,7 +232,8 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Season : 
+                                >Season
+                                <span className={css`@media (max-width: 600px) { margin-left: 6%; }; margin-left: 7%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -246,7 +253,7 @@ function AnimeDetail(){
                                         padding-left: 0px;
                                         flex-wrap: wrap;
                                     };
-                                    width: 100%;
+                                    width: 85%;
                                     position: relative;
                                     text-align: left;
                                     top: 30px;
@@ -265,6 +272,10 @@ function AnimeDetail(){
                                         padding: 5px;
                                         margin: 5px;
                                         text-align: center;
+                                        cursor: pointer;
+                                        &:hover {
+                                           background-color: #DA1212;
+                                        }
                                     `}>
                                     {row}
                                 </div>
@@ -287,36 +298,42 @@ function AnimeDetail(){
                         grid-template-columns: repeat(3, auto);
                     `}
                 >
-                    <button
+                    <div
                         className={css`
-                            width: 100%;
+                            width: -webkit-fill-available;
                             margin: 0 auto;
                             color: white;
-                            background-color: #1a1a1a;
+                            background-color: #222;
                             display: block; 
                             padding: 14px 16px;
+                            cursor: pointer;
+                            background-color: ${showPage === 'Sinopsis' ? '#DA1212' : '#222'};
                         `}
-                    onClick={()=>changeShowPage('Sinopsis')}>Sinopsis</button>
-                    <button
+                    onClick={()=>changeShowPage('Sinopsis')}>Sinopsis</div>
+                    <div
                         className={css`
-                            width: 100%;
+                            width: -webkit-fill-available;
                             margin: 0 auto;
                             color: white;
-                            background-color: #1a1a1a;
+                            background-color: #222;
                             display: block; 
                             padding: 14px 16px;
+                            cursor: pointer;
+                            background-color: ${showPage === 'Trailer' ? '#DA1212' : '#222'};
                         `}
-                    onClick={()=>changeShowPage('Trailer')}>Trailer</button>
-                    <button
+                    onClick={()=>changeShowPage('Trailer')}>Trailer</div>
+                    <div
                         className={css`
-                            width: 100%;
+                            width: -webkit-fill-available;
                             margin: 0 auto;
                             color: white;
-                            background-color: #1a1a1a;
+                            background-color: #222;
                             display: block; 
                             padding: 14px 16px;
+                            cursor: pointer;
+                            background-color: ${showPage === 'Karakter' ? '#DA1212' : '#222'};
                         `}
-                    onClick={()=>changeShowPage('Karakter')}>Karakter</button>
+                    onClick={()=>changeShowPage('Karakter')}>Karakter</div>
                 </div>
                 {showPage === 'Sinopsis' ? (
                     <div

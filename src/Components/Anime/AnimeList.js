@@ -30,7 +30,7 @@ function AnimeList(){
     const handleFilterbyGenres = (genre) => {
         console.log(genre)
     }
-
+    console.log(animeLists)
     return(
         <div
             className={css`

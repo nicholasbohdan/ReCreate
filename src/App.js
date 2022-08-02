@@ -6,6 +6,8 @@ import CollectionList from './Components/Collection/CollectionList';
 import AnimeList from './Components/Anime/AnimeList';
 import AnimeDetail from './Components/Anime/AnimeDetail';
 import CollectionDetail from './Components/Collection/CollectionDetail';
+import { AnimeListContext } from './context/Context';
+import { useMemo, useState } from 'react';
 
 const client = new ApolloClient({
   uri: 'https://graphql.anilist.co',
@@ -13,18 +15,24 @@ const client = new ApolloClient({
 });
 
 function App() {
+  
+  const [dataContext, setDataContext] = useState(null);
+
+  const value = useMemo(() => ({ dataContext, setDataContext }), [dataContext, setDataContext]);
   return (
     <Router>
-      <ApolloProvider client={client}>
-        <Header />
-        <Routes>
-            <Route path="/" element={<AnimeList />} />
-            <Route path="/detail/:animeId" element={<AnimeDetail />} />
-            <Route path="/collection" element={<CollectionList />} />
-            <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />
-            {/* <Route path='/about' component={About} /> */}
-        </Routes>
-      </ApolloProvider>
+      <AnimeListContext.Provider value={value}>
+        <ApolloProvider client={client}>
+          <Header />
+            <Routes>
+                <Route path="/" element={<AnimeList />} />
+                <Route path="/detail/:animeId" element={<AnimeDetail />} />
+                <Route path="/collection" element={<CollectionList />} />
+                <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />
+                {/* <Route path='/about' component={About} /> */}
+            </Routes>
+        </ApolloProvider>
+      </AnimeListContext.Provider>
     </Router>
   );
 }

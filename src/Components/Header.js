@@ -13,7 +13,6 @@ function Header(){
             <div
                 className={css`
                     width: 100%;
-                    background-color: #1a1a1a;
                 `}
             >
                 <nav 
@@ -27,13 +26,19 @@ function Header(){
                     padding: 14px 16px;
                 `}
                 >
-                    <label>DaiFlix </label>
+                    <label
+                        className={css`
+                            font-style: italic;
+                            font-size: 24px;
+                            font-weight: 700;
+                        `}
+                    >DaiFlix </label>
                 </nav>
             </div>
             <div
                 className={css`
                     width: 100%;
-                    background-color: #FF1818;
+                    background-color: #DA1212;
                 `}
             >
                 <nav 
@@ -42,6 +47,7 @@ function Header(){
                     margin: 0 auto;
                     max-width: 90%;
                     display: block; 
+                    color: white;
                     padding: 14px 16px;
                 `}
                 >

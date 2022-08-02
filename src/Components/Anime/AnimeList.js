@@ -1,31 +1,36 @@
-import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { css } from '@emotion/css';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { GET_ALL_GENRES, GET_ANIME_DATA_LIST } from '../../actions/anime';
 import anyaImg from '../../assets/Spy-x-Family-Anya-Forger.png';
+import { AnimeListContext } from '../../context/Context';
 // Spy-x-Family-Anya-Forger
 
 function AnimeList(){
     const navigate = useNavigate();
-    const [getListGenre, { data: genreList }] = useLazyQuery(GET_ALL_GENRES);
-    
-    const [getListAnime, { data }] = useLazyQuery(GET_ANIME_DATA_LIST);
+    const { dataContext, setDataContext } = useContext(AnimeListContext);
+    const { data: genreList, error: GetAktaError, loading: isGenreListLoading } = useQuery(GET_ALL_GENRES);
+    const { data: animeLists, error: GetAnimeListError, loading: isAnimeListLoading } = useQuery(GET_ANIME_DATA_LIST, {
+        variables: { page: 1 },
+    });
     React.useEffect(() => {
-        getListAnime({
-            variables: {
-                page: 1,
-            },
-        });
-        getListGenre()
+        if(!isAnimeListLoading && !isGenreListLoading){
+            let temp = genreList.GenreCollection.filter(row=>row !== 'Hentai');
+            setDataContext({
+                animeList: animeLists.Page.mediaList,
+                genreList: temp
+            })
+        }
         // eslint-disable-next-line
-      }, [getListAnime, getListGenre]);
+      }, [genreList, animeLists]);
     const handleRedirect = (id) => {
         navigate(`/detail/${id}`)
     }
     const handleFilterbyGenres = (genre) => {
         console.log(genre)
     }
+
     return(
         <div
             className={css`
@@ -35,6 +40,9 @@ function AnimeList(){
         >
             <div  
                 className={css`
+                    @media (max-width: 600px) {
+                        display: block;
+                    };
                     width: 100%;
                     max-width: 90%;
                     margin: 0 auto;
@@ -44,6 +52,9 @@ function AnimeList(){
             >
                 <div
                     className={css`
+                        @media (max-width: 600px) {
+                            width: 100%;
+                        };
                         width: 70%;
                         background-color: #1a1a1a;
                         padding-top: 14px;
@@ -58,6 +69,10 @@ function AnimeList(){
                     >
                     <div
                         className={css`
+                            @media (max-width: 600px) {             
+                                width: 95%;
+                                padding: 9px;
+                            };
                             width: 100%;
                             padding: 12px;
                             margin-bottom: 4px;
@@ -79,28 +94,32 @@ function AnimeList(){
                         >
                             <ul 
                                 className={css`
-                                    display: table;
+                                    @media (max-width: 600px) {             
+                                        display: grid;
+                                        grid-template-columns: repeat(2, 50%);
+                                    };
                                     margin: 0 auto;
                                     list-style-type: none;
                                     width: 100%;
                                     padding: 0px;
+                                    display: grid;
+                                    grid-template-columns: repeat(4, 25%);
                                 `}
                             >
                                 {/* <button onClick={()=>handleRedirect()}> aaaaa</button> */}
-                                {!data?
+                                {!dataContext?
                                 <div
                                     className={css`  
                                         color:white;
                                         height: 100vh;
                                     `}
                                 > Loading... </div>
-                                    : data.Page.mediaList.map((row, key)=>(
+                                    : dataContext.animeList.map((row, key)=>(
                                     <li
                                         className={css`  
                                             float: left;
-                                            width: 17.9%;
                                             margin: 10px;
-                                            height: 300px
+                                            height: 275px;
                                         `}
                                     key={key}
                                     onClick={()=>handleRedirect(row.media.id)}
@@ -120,14 +139,20 @@ function AnimeList(){
                                                     width: 100%;
                                                     height: 100%;
                                                     position: relative;
-                                                    top: -60px;
+                                                    top: -35px;
                                                     color: white;
                                                 `}
                                             >
                                                 <lable
                                                 className={css`
-                                                    font-size: 16px;
+                                                    @media (max-width: 600px) {
+                                                        top: -55px;
+                                                    };
+                                                    font-size: 14px;
                                                     line-height: 21px;
+                                                    font-weight: 700;
+                                                    position: relative;
+                                                    top: -40px;
                                                 `}
                                                 >
                                                     {row.media.title.userPreferred}
@@ -142,39 +167,30 @@ function AnimeList(){
                 </div>
                 <div
                     className={css`
+                        @media (max-width: 600px) {
+                            width: 100%;
+                        };
                         width: 30%;
                         background-color: #1a1a1a;
                     `}
                 >
-                    {/* <div
-                        className={css`
-                            width: 100%;
-                            padding: 14px;
-                        `}
-                    >
-                        <div
-                            className={css`
-                                width: 100%;
-                                padding: 12px;
-                                margin-bottom: 4px;
-                                height: 100%;
-                                color: white;
-                                text-align: initial;
-                                background-color: #222;
-                            `}
-                        >
-                            <label>Season Choose</label>
-                        </div>
-                    </div> */}
                     
                     <div
                         className={css`
+                            @media (max-width: 600px) {
+                                padding: 0px;
+                                padding-top: 14px;
+                            };
                             width: 100%;
                             padding: 14px;
                         `}
                     >
                         <div
                             className={css`
+                                @media (max-width: 600px) {
+                                    width: 95%;
+                                    padding: 9px;
+                                };
                                 width: 100%;
                                 padding: 12px;
                                 margin-bottom: 4px;
@@ -184,12 +200,16 @@ function AnimeList(){
                                 background-color: #222;
                             `}
                         >
-                            <label>Genre Choose</label>
+                            <label>Genres</label>
                             {/* genreList.GenreCollection */}
                             
                         </div>
                         <div
                             className={css`
+                                @media (max-width: 600px) {
+                                    width: 95%;
+                                    padding: 9px;
+                                };
                                 width: 100%;
                                 padding: 12px;
                                 margin-bottom: 4px;
@@ -208,19 +228,20 @@ function AnimeList(){
                                     padding: 0px;
                                 `}
                             >
-                                {!genreList?
+                                {!dataContext?
                                 <div
                                     className={css`  
                                         color:white;
                                         height: 100vh;
                                     `}
                                 > Loading... </div>
-                                    : genreList.GenreCollection.map((row, key)=>(
+                                    : dataContext.genreList.map((row, key)=>(
                                     <li
                                         className={css`
                                             padding: 8px;
                                         `}
                                         onClick={()=>handleFilterbyGenres(row)}
+                                        key={key}
                                     >
                                         {row}
                                     </li>

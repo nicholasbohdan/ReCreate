@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 export const GET_ANIME_DATA_LIST = gql`
-  query get {
-    Page(page : 1){
+  query get($page: Int) {
+    Page(page : $page){
         pageInfo {
             total
             perPage
@@ -70,6 +70,8 @@ export const GET_ANIME_DATA_DETAIL = gql`
       hashtag
       trailer {
         id
+        site
+        thumbnail
       }
       coverImage {
         extraLarge
@@ -77,6 +79,7 @@ export const GET_ANIME_DATA_DETAIL = gql`
         medium
         color
       }
+      bannerImage
       genres
       popularity
       averageScore

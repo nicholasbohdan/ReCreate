@@ -101,7 +101,7 @@ function AnimeDetail(){
                                     };
                                     width: 90%;
                                     position: relative;
-                                    text-align: left;
+                                    text-align: center;
                                     top: 30px;
                                 `}
                             >   
@@ -139,7 +139,7 @@ function AnimeDetail(){
                                         font-weight: 700;
                                     `}
                                 >Status
-                                <span className={css`@media (max-width: 600px) { margin-left: 7.5%; }; margin-left: 15%;`}></span>: 
+                                <span className={css`@media (max-width: 600px) { margin-left: 7%; }; margin-left: 15%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -175,7 +175,7 @@ function AnimeDetail(){
                                         font-weight: 700;
                                     `}
                                 >Studio
-                                <span className={css`@media (max-width: 600px) { margin-left: 6.5%; }; margin-left: 14%;`}></span>: 
+                                <span className={css`@media (max-width: 600px) { margin-left: 7%; }; margin-left: 14%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;

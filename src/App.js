@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, HashRouter, } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 import Header from './Components/Header';
 import CollectionList from './Components/Collection/CollectionList';
@@ -20,20 +20,20 @@ function App() {
 
   const value = useMemo(() => ({ dataContext, setDataContext }), [dataContext, setDataContext]);
   return (
-    <Router>
+    <HashRouter>
       <AnimeListContext.Provider value={value}>
         <ApolloProvider client={client}>
           <Header />
             <Routes>
-                <Route path="/" element={<AnimeList />} />
-                <Route path="/detail/:animeId" element={<AnimeDetail />} />
-                <Route path="/collection" element={<CollectionList />} />
-                <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />
-                {/* <Route path='/about' component={About} /> */}
+              <Route path="/anime-list" element={<AnimeList />} />
+              <Route path="/detail/:animeId" element={<AnimeDetail />} />
+              <Route path="/collection" element={<CollectionList />} />
+              <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />
+              {/* <Route path='/about' component={About} /> */}
             </Routes>
         </ApolloProvider>
       </AnimeListContext.Provider>
-    </Router>
+    </HashRouter>
   );
 }
 

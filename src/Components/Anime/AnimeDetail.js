@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { css } from '@emotion/css';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GET_ANIME_DATA_DETAIL } from '../../actions/anime';
 
 function AnimeDetail(){
+    const navigate = useNavigate();
     const [ showPage, setShowPage ] = useState('Sinopsis')
     const params = useParams();
     const [getDetailAnime, { data, loading: detailIsLoading }] = useLazyQuery(GET_ANIME_DATA_DETAIL);
@@ -19,7 +20,10 @@ function AnimeDetail(){
     const changeShowPage = (page) =>{
         setShowPage(page)
     }
-    console.log(data?.Media)
+    
+    const handleRedirectListAnime = (genre) => {
+        console.log(genre)
+    }
     return(
         <div
             className={css`
@@ -127,7 +131,7 @@ function AnimeDetail(){
                                     text-align: left;
                                     top: 30px;
                                     display: grid;
-                                    grid-template-columns: repeat(2, 260px);
+                                    grid-template-columns: repeat(2, 315px);
                                     justify-content: space-between;
                                 }
                                 `}
@@ -138,8 +142,7 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Status
-                                <span className={css`@media (max-width: 600px) { margin-left: 7%; }; margin-left: 15%;`}></span>: 
+                                >Status<span className={css`@media (max-width: 600px) { margin-left: 8.5%; }; margin-left: 15%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -156,8 +159,7 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Type
-                                <span className={css`@media (max-width: 600px) { margin-left: 11%; }; margin-left: 13%;`}></span>: 
+                                >Type<span className={css`@media (max-width: 600px) { margin-left: 12.5%; }; margin-left: 13%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -174,13 +176,22 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Studio
-                                <span className={css`@media (max-width: 600px) { margin-left: 7%; }; margin-left: 14%;`}></span>: 
-                                    <lable
+                                >Studio<span className={css`@media (max-width: 600px) { margin-left: 8%; }; margin-left: 14%;`}></span>: 
+                                    <div
                                         className={css`
+                                            @media (max-width: 600px) {
+                                                position: relative;
+                                                width: 80%;
+                                                left: 80px;
+                                                top: -20px;
+                                            };
                                             padding-left: 12px;
                                             font-size: 16px;
                                             font-weight: 500;
+                                            width: 100%;
+                                            position: relative;
+                                            left: 88px;
+                                            top: -20px;
                                         `}
                                     >
                                         {data?.Media.studios.edges.map((row ,key) =>(
@@ -188,7 +199,7 @@ function AnimeDetail(){
                                                 <span>{row.node.name}</span>
                                             ) : ( <span>{row.node.name}, </span> )
                                         ))}
-                                    </lable>
+                                    </div>
                                 </lable>
                                 <lable
                                     className={css`
@@ -196,8 +207,7 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Episodes
-                                <span className={css`@media (max-width: 600px) { margin-left: 2%; }; margin-left: 1%;`}></span>: 
+                                >Episodes<span className={css`@media (max-width: 600px) { margin-left: 2%; }; margin-left: 1%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -214,8 +224,7 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Duration
-                                <span className={css`@media (max-width: 600px) { margin-left: 1.5%; }; margin-left: 7%;`}></span>: 
+                                >Duration<span className={css`@media (max-width: 600px) { margin-left: 1.5%; }; margin-left: 7%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -232,8 +241,7 @@ function AnimeDetail(){
                                         font-size: 16px;
                                         font-weight: 700;
                                     `}
-                                >Season
-                                <span className={css`@media (max-width: 600px) { margin-left: 6%; }; margin-left: 7%;`}></span>: 
+                                >Season<span className={css`@media (max-width: 600px) { margin-left: 6.5%; }; margin-left: 7%;`}></span>: 
                                     <lable
                                         className={css`
                                             padding-left: 12px;
@@ -276,7 +284,9 @@ function AnimeDetail(){
                                         &:hover {
                                            background-color: #DA1212;
                                         }
-                                    `}>
+                                    `}
+                                    onClick={()=>handleRedirectListAnime(row)}
+                                >
                                     {row}
                                 </div>
                             ))}

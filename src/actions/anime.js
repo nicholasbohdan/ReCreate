@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 export const GET_ANIME_DATA_LIST = gql`
   query get($page: Int) {
-    Page(page : $page){
+    Page(page : $page, perPage: 48){
         pageInfo {
             total
             perPage
@@ -9,7 +9,7 @@ export const GET_ANIME_DATA_LIST = gql`
             lastPage
             hasNextPage
         }
-        mediaList{
+        mediaList(type:ANIME){
             media {
                 title {
                     romaji
@@ -42,6 +42,66 @@ export const GET_ANIME_DATA_LIST = gql`
             }
         }
   }
+}
+`;
+
+export const GET_ANIME_SEARCH_LIST = gql`
+  query get($page: Int, $search: String) {
+    Page(page : $page, perPage: 48){
+      pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+      }
+      media(search: $search, isAdult: false){
+          id
+          idMal
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+            color
+          }
+      }
+    }
+}
+`;
+
+export const GET_ANIME_LIST_GENRE = gql`
+  query get($page: Int, $genre: String) {
+    Page(page : $page, perPage: 48){
+      pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+      }
+      media(genre: $genre, isAdult: false){
+          id
+          idMal
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+            color
+          }
+      }
+    }
 }
 `;
 
@@ -169,4 +229,43 @@ export const GET_ALL_GENRES = gql`
   query get {
     GenreCollection
   }
+`;
+
+export const GET_ALL_TREND_ANIME = gql`
+  query get {
+    Page(page : 1, perPage: 10){
+      mediaTrends(sort: POPULARITY){
+          media {
+              title {
+                  romaji
+                  english
+                  native
+                  userPreferred
+              }
+              coverImage {
+                extraLarge
+                large
+                medium
+                color
+              }
+              id
+              idMal
+              season
+              seasonYear
+              type
+              format
+              status
+              episodes
+              duration
+              isAdult
+              averageScore
+              popularity
+              source
+              countryOfOrigin
+              isLicensed
+              genres
+          }
+      }
+  }
+}
 `;

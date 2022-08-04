@@ -25,7 +25,7 @@ function App() {
         <ApolloProvider client={client}>
           <Header />
             <Routes>
-              <Route path="/anime-list" element={<AnimeList />} />
+              <Route exact path="/anime-list" element={<AnimeList />} />
               <Route path="/detail/:animeId" element={<AnimeDetail />} />
               <Route path="/collection" element={<CollectionList />} />
               <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />

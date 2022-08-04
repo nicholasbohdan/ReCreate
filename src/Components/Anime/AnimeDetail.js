@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { css } from '@emotion/css';
 import { useNavigate, useParams } from "react-router-dom";
-import { GET_ANIME_DATA_DETAIL } from '../../actions/anime';
+import { GET_ANIME_DATA_DETAIL, GET_ANIME_LIST_GENRE } from '../../actions/anime';
+import { AnimeListContext } from '../../context/Context';
 
 function AnimeDetail(){
+    const { dataContext, setDataContext } = useContext(AnimeListContext);
     const navigate = useNavigate();
     const [ showPage, setShowPage ] = useState('Sinopsis')
     const params = useParams();
     const [getDetailAnime, { data, loading: detailIsLoading }] = useLazyQuery(GET_ANIME_DATA_DETAIL);
+    const [getListAnimebyGenre, { data: animeListbyGenre }] = useLazyQuery(GET_ANIME_LIST_GENRE);
     React.useEffect(() => {
         getDetailAnime({
             variables: {
@@ -22,7 +25,13 @@ function AnimeDetail(){
     }
     
     const handleRedirectListAnime = (genre) => {
-        console.log(genre)
+        setDataContext({
+            ...dataContext,
+            filter:{
+                genre: genre
+            }
+        })
+        navigate('/anime-list')
     }
     return(
         <div
@@ -52,6 +61,7 @@ function AnimeDetail(){
                         width: 70%;
                         height: 100%;
                     `}
+                    alt=''
                     src={data?.Media.bannerImage}
                 />
                 <div
@@ -93,6 +103,7 @@ function AnimeDetail(){
                                     width: 143px;
                                     height: 200px;
                                 `}
+                                alt=''
                                 src={data?.Media.coverImage.extraLarge}
                             />
                         </div>
@@ -392,7 +403,7 @@ function AnimeDetail(){
                             Trailer {data?.Media.title.english}
                             {data.Media.trailer ? (
                                 <div>
-                                    <img src={data?.Media.trailer.thumbnail}/>
+                                    <img alt='' src={data?.Media.trailer.thumbnail}/>
                                 </div>
                             ) : (
                                 <div>
@@ -437,7 +448,7 @@ function AnimeDetail(){
                                 >
                                     {data?.Media.characters.edges.map((row, key)=>(
                                         <li>
-                                            <img src={row.node.image.medium}/>
+                                            <img alt='' src={row.node.image.medium}/>
                                             <div>
                                                 {row.node.name.userPreferred}
                                             </div>

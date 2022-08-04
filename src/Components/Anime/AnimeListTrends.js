@@ -1,15 +1,13 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { css } from '@emotion/css';
-import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { GET_ALL_GENRES, GET_ALL_TREND_ANIME, GET_ANIME_DATA_LIST } from '../../actions/anime';
-import anyaImg from '../../assets/Spy-x-Family-Anya-Forger.png';
+import React, { useContext } from 'react';
+import { GET_ALL_TREND_ANIME } from '../../actions/anime';
 import { AnimeListContext } from '../../context/Context';
 // Spy-x-Family-Anya-Forger
 
 function AnimeListTrends(props){
     const { dataContext, setDataContext } = useContext(AnimeListContext);
-    const { data: animeListTrends, error: GetAnimeListTrendsError, loading: isAnimeListTrendsLoading } = useQuery(GET_ALL_TREND_ANIME);
+    const { data: animeListTrends, loading: isAnimeListTrendsLoading } = useQuery(GET_ALL_TREND_ANIME);
     // const [getListAnimeTrend, { data }] = useLazyQuery(GET_ALL_TREND_ANIME);
     React.useEffect(() => {
         if(!isAnimeListTrendsLoading){
@@ -122,6 +120,7 @@ function AnimeListTrends(props){
                                                 width: 100%;
                                                 height: 240px;
                                             `}
+                                        alt=''
                                         src={row.media.coverImage.extraLarge} />
                                         <div
                                             className={css`

@@ -1,39 +1,32 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { css } from '@emotion/css';
 import React, { useContext, useState } from 'react';
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import { GET_ALL_GENRES, GET_ALL_TREND_ANIME, GET_ANIME_DATA_LIST } from '../../actions/anime';
-import anyaImg from '../../assets/Spy-x-Family-Anya-Forger.png';
+import { useNavigate } from "react-router-dom";
+import { GET_ANIME_DATA_LIST } from '../../actions/anime';
 import { AnimeListContext } from '../../context/Context';
+import AnimeListbyGenre from './AnimeListbyGenre';
 import AnimeListbySearch from './AnimeListbySearch';
 import AnimeListTrends from './AnimeListTrends';
 // Spy-x-Family-Anya-Forger
 
 function AnimeList(){
     const navigate = useNavigate();
-    const params = useLocation();
     const [numberPage, setNumberPage] = useState([]);
-    const [newGenreList, setNewGenreList] = useState([]);
     const [page, setPage] = useState(1);
     const { dataContext, setDataContext } = useContext(AnimeListContext);
-    const { data: genreList, error: GetGenreListError, loading: isGenreListLoading } = useQuery(GET_ALL_GENRES);
     const [getListAnimebyPage, { data: animeList }] = useLazyQuery(GET_ANIME_DATA_LIST);
-    // const { data: animeLists, error: GetAnimeListError, loading: isAnimeListLoading } = useQuery(GET_ANIME_DATA_LIST, {
-    //     variables: { page: page },
-    // });
     React.useEffect(() => {
         getListAnimebyPage();
-        if(!isGenreListLoading && animeList){
-            let temp = genreList.GenreCollection.filter(row=>row !== 'Hentai');
+        if(animeList){
             setDataContext({
                 ...dataContext,
                 animeList: animeList.Page.mediaList,
-                genreList: temp
             })
-            setNewGenreList(temp)
         }
-        
-        
+        if(dataContext?.filter !== {}){
+            console.log(animeList)
+            getListAnimebyPage();
+        }
         let temp = [];
         for(var i = parseInt(page); i < parseInt(page)+3; i++) {
             temp = [
@@ -42,7 +35,7 @@ function AnimeList(){
         }
         setNumberPage(temp)
         // eslint-disable-next-line
-      }, []);
+      }, [dataContext?.filter]);
     const handleRedirect = (id) => {
         navigate(`/detail/${id}`)
     }
@@ -59,16 +52,12 @@ function AnimeList(){
                 ...temp, i,
             ]
         }
+        setPage(page)
         setNumberPage(temp)
-        console.log(page, condition)
     }
 
-    const handleFilterbyGenres = (genre) => {
-        console.log(genre)
-    }
     const handleAddCollection = (data) => {
         let temp = data
-        console.log(typeof dataContext.collectionList === 'undefined')
         if(typeof dataContext.collectionList === 'undefined'){
             setDataContext({
                 ...dataContext,
@@ -86,7 +75,6 @@ function AnimeList(){
             })
         }
     }
-    console.log(dataContext)
     return(
         <div
             className={css`
@@ -140,9 +128,14 @@ function AnimeList(){
                     >
                         <label>Anime List</label>
                     </div>
-                        { typeof dataContext?.filter?.search !== 'undefined' ? 
-                            <AnimeListbySearch /> 
-                            : (
+                    {console.log(dataContext?.filter)}
+                        { dataContext?.filter !== {} && typeof dataContext?.filter !== 'undefined' ?
+                            (
+                                typeof dataContext?.filter.search !== 'undefined' ? 
+                                    <AnimeListbySearch /> 
+                                : 
+                                    <AnimeListbyGenre />
+                            ) : (
                                 <div
                                     className={css`
                                         width: 100%;
@@ -165,8 +158,6 @@ function AnimeList(){
                                             grid-template-columns: repeat(4, 25%);
                                         `}
                                     >
-                                        {/* <button onClick={()=>handleRedirect()}> aaaaa</button> */}
-                                        {console.log(dataContext)}
                                         { !animeList ?
                                                 <div
                                                     className={css`  
@@ -189,6 +180,7 @@ function AnimeList(){
                                                                     width: 100%;
                                                                     height: 240px;
                                                                 `}
+                                                            alt=''
                                                             src={row.media.coverImage.extraLarge} />
                                                             <div
                                                                 className={css`

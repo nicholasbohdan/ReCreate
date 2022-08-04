@@ -1,38 +1,16 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
 import { css } from '@emotion/css';
 import React, { useContext, useState } from 'react';
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import { GET_ALL_GENRES, GET_ALL_TREND_ANIME, GET_ANIME_DATA_LIST } from '../../actions/anime';
-import anyaImg from '../../assets/Spy-x-Family-Anya-Forger.png';
+import { useNavigate } from "react-router-dom";
 import { AnimeListContext } from '../../context/Context';
 import AnimeListTrends from '../Anime/AnimeListTrends';
 // Spy-x-Family-Anya-Forger
 
 function CollectionList(){
     const navigate = useNavigate();
-    const params = useLocation();
     const [numberPage, setNumberPage] = useState([]);
-    const [newGenreList, setNewGenreList] = useState([]);
     const [page, setPage] = useState(1);
     const { dataContext, setDataContext } = useContext(AnimeListContext);
-    const { data: genreList, error: GetGenreListError, loading: isGenreListLoading } = useQuery(GET_ALL_GENRES);
-    const [getListAnimebyPage, { data: animeList }] = useLazyQuery(GET_ANIME_DATA_LIST);
-    // const { data: animeLists, error: GetAnimeListError, loading: isAnimeListLoading } = useQuery(GET_ANIME_DATA_LIST, {
-    //     variables: { page: page },
-    // });
     React.useEffect(() => {
-        getListAnimebyPage();
-        if(!isGenreListLoading && animeList){
-            let temp = genreList.GenreCollection.filter(row=>row !== 'Hentai');
-            setDataContext({
-                ...dataContext,
-                animeList: animeList.Page.mediaList,
-                genreList: temp
-            })
-            setNewGenreList(temp)
-        }
-        
-        
         let temp = [];
         for(var i = parseInt(page); i < parseInt(page)+3; i++) {
             temp = [
@@ -47,27 +25,18 @@ function CollectionList(){
     }
     
     const handleChangePage = (page, condition) => {
-        getListAnimebyPage({
-            variables: {
-                page: page
-            }
-        });
         let temp = [];
         for(var i = parseInt(page); i < parseInt(page)+3; i++) {
             temp = [
                 ...temp, i,
             ]
         }
+        setPage(page)
         setNumberPage(temp)
-        console.log(page, condition)
     }
 
-    const handleFilterbyGenres = (genre) => {
-        console.log(genre)
-    }
     const handleAddCollection = (data) => {
         let temp = data
-        console.log(typeof dataContext.collectionList === 'undefined')
         if(typeof dataContext.collectionList === 'undefined'){
             setDataContext({
                 ...dataContext,
@@ -85,7 +54,23 @@ function CollectionList(){
             })
         }
     }
-    console.log(dataContext)
+    const handleRemoveCollection = (data) => {
+        let temp = dataContext.collectionList.filter(row=>row.id !== data.id);
+        // console.log(dataContext.collectionList.filter(row=>row.id !== data.id))
+        if(temp.length === 0){
+            setDataContext({
+                ...dataContext,
+                collectionList: []
+            })
+        } else {
+            setDataContext({
+                ...dataContext,
+                collectionList: [
+                    ...temp,
+                ]
+            })
+        }
+    }
     return(
         <div
             className={css`
@@ -185,6 +170,7 @@ function CollectionList(){
                                                         width: 100%;
                                                         height: 240px;
                                                     `}
+                                                alt=''
                                                 src={row.coverImage.extraLarge} />
                                                 <div
                                                     className={css`
@@ -281,9 +267,9 @@ function CollectionList(){
                                                                 background-color: white;
                                                             }
                                                         `}
-                                                        onClick={()=>handleAddCollection(row.media)}
+                                                        onClick={()=>handleRemoveCollection(row)}
                                                     >
-                                                        Add to Collection
+                                                        Remove From Collection
                                                     </button>
                                                 </div>
                                             {/* </div> */}
@@ -304,7 +290,7 @@ function CollectionList(){
                                     `}
                                 >
                                     {/* {console.log(animeLists?.Page.pageInfo)} */}
-                                    <button
+                                    {/* <button
                                         className={css`
                                             color: white;
                                             border-radius: 12px;
@@ -321,7 +307,7 @@ function CollectionList(){
                                             }
                                         `}
                                         onClick={()=>handleChangePage(1, 'first')}
-                                    >◀◀</button>
+                                    >◀◀</button> */}
                                     <button
                                         className={css`
                                             color: white;
@@ -385,7 +371,7 @@ function CollectionList(){
                                         onClick={()=>handleChangePage(parseInt(page)+1, 'next')}
                                         // href={`/?page=${parseInt(page)+1}`}
                                     >▶</button>
-                                    <button
+                                    {/* <button
                                         className={css`
                                             color: white;
                                             border-radius: 12px;
@@ -403,7 +389,7 @@ function CollectionList(){
                                         // class="last"
                                         onClick={()=>handleChangePage(animeList?.Page.pageInfo.lastPage, 'last')}
                                         // href={`/?page=${animeLists?.Page.pageInfo.lastPage}`}
-                                    >▶▶</button>
+                                    >▶▶</button> */}
                                 </div>
                             </div>
                         </div>

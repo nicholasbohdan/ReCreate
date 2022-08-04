@@ -1,22 +1,20 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { css } from '@emotion/css';
 import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GET_ANIME_SEARCH_LIST } from '../../actions/anime';
-import anyaImg from '../../assets/Spy-x-Family-Anya-Forger.png';
 import { AnimeListContext } from '../../context/Context';
 // Spy-x-Family-Anya-Forger
 
 function AnimeListbySearch(){
     const navigate = useNavigate();
-    const params = useLocation();
     const [numberPage, setNumberPage] = useState([]);
     const [page, setPage] = useState(1);
     const { dataContext, setDataContext } = useContext(AnimeListContext);
-    const [getListAnimeSearch, { data: animeListbySearch, error, loading }] = useLazyQuery(GET_ANIME_SEARCH_LIST);
+    const [getListAnimeSearch, { data: animeListbySearch }] = useLazyQuery(GET_ANIME_SEARCH_LIST);
     React.useEffect(() => {
         console.log(dataContext)
-        if(dataContext && typeof dataContext.filter !== 'undefined'){
+        if(dataContext && typeof dataContext.filter?.search !== 'undefined'){
             getListAnimeSearch({
                 variables:{
                     page: page,
@@ -26,6 +24,7 @@ function AnimeListbySearch(){
         }
         
         let temp = [];
+        console.log(animeListbySearch?.Page.pageInfo)
         for(var i = parseInt(page); i < parseInt(page)+3; i++) {
             temp = [
                 ...temp, i,
@@ -33,7 +32,7 @@ function AnimeListbySearch(){
         }
         setNumberPage(temp)
         // eslint-disable-next-line
-      }, []);
+      }, [animeListbySearch]);
     const handleRedirect = (id) => {
         navigate(`/detail/${id}`)
     }
@@ -51,16 +50,12 @@ function AnimeListbySearch(){
                 ...temp, i,
             ]
         }
+        setPage(page)
         setNumberPage(temp)
-        console.log(page, condition)
     }
 
-    const handleFilterbyGenres = (genre) => {
-        console.log(genre)
-    }
     const handleAddCollection = (data) => {
         let temp = data
-        console.log(typeof dataContext.collectionList === 'undefined')
         if(typeof dataContext.collectionList === 'undefined'){
             setDataContext({
                 ...dataContext,
@@ -78,8 +73,6 @@ function AnimeListbySearch(){
             })
         }
     }
-    console.log(animeListbySearch)
-    console.log(page)
     return(
         <div
             className={css`
@@ -126,6 +119,7 @@ function AnimeListbySearch(){
                                         width: 100%;
                                         height: 240px;
                                     `}
+                                alt=''
                                 src={row.coverImage.extraLarge} />
                                 <div
                                     className={css`

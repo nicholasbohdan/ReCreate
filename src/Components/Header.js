@@ -101,7 +101,6 @@ function Header(){
                             cursor: pointer;
                         `}
                     >
-                        
                             <input
                                 className={css`
                                     @media (max-width: 600px) {
@@ -128,7 +127,6 @@ function Header(){
                                 onChange={(e)=>handleOnChange(e)}
                                 value={searchValue}
                             />
-                            {console.log(searchValue)}
                             <button
                                 className={css`
                                     color: white;

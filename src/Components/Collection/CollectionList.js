@@ -247,7 +247,7 @@ function CollectionList(){
                                                                 background-color: white;
                                                             }
                                                         `}
-                                                        onClick={()=>handleRedirect(row.media.id)}
+                                                        onClick={()=>handleRedirect(row.id)}
                                                     >
                                                         Visit
                                                     </button>

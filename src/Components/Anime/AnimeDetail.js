@@ -9,6 +9,7 @@ function AnimeDetail(){
     const { dataContext, setDataContext } = useContext(AnimeListContext);
     const navigate = useNavigate();
     const [ showPage, setShowPage ] = useState('Sinopsis')
+    const [ showCollection, setShowCollection ] = useState(false)
     const params = useParams();
     const [getDetailAnime, { data, loading: detailIsLoading }] = useLazyQuery(GET_ANIME_DATA_DETAIL);
     const [getListAnimebyGenre, { data: animeListbyGenre }] = useLazyQuery(GET_ANIME_LIST_GENRE);
@@ -18,8 +19,14 @@ function AnimeDetail(){
                 id: params.animeId,
             },
         });
+        // console.log(dataContext.collectionList)
+        if(dataContext){
+            if(typeof dataContext.collectionList !== 'undefined'){
+                setShowCollection(dataContext.collectionList?.filter(row=>row.id === parseInt(params.animeId)).length !== 0)
+            }
+        }
         // eslint-disable-next-line
-      }, [getDetailAnime]);
+      }, [getDetailAnime, dataContext?.collectionList]);
     const changeShowPage = (page) =>{
         setShowPage(page)
     }
@@ -33,6 +40,42 @@ function AnimeDetail(){
         })
         navigate('/anime-list')
     }
+    const handleAddCollection = (data) => {
+        let temp = data.Media
+        if(typeof dataContext.collectionList === 'undefined'){
+            setDataContext({
+                ...dataContext,
+                collectionList: [
+                    temp,
+                ]
+            })
+        } else if (dataContext.collectionList.filter(row=>row.id === parseInt(params.animeId)).length === 0){
+            setDataContext({
+                ...dataContext,
+                collectionList: [
+                    ...dataContext.collectionList,
+                    temp,
+                ]
+            })
+        }
+    }
+    const handleRemoveCollection = (data) => {
+        let temp = dataContext.collectionList.filter(row=>row.id !== parseInt(data.Media.id));
+        if(temp.length === 0){
+            setDataContext({
+                ...dataContext,
+                collectionList: []
+            })
+        } else {
+            setDataContext({
+                ...dataContext,
+                collectionList: [
+                    ...temp,
+                ]
+            })
+        }
+    }
+    console.log(dataContext)
     return(
         <div
             className={css`
@@ -58,8 +101,10 @@ function AnimeDetail(){
                         @media (max-width: 600px) {
                             width: 100%;
                         };
+                        object-fit: cover;
                         width: 70%;
                         height: 100%;
+                        max-height: 240px
                     `}
                     alt=''
                     src={data?.Media.bannerImage}
@@ -193,15 +238,15 @@ function AnimeDetail(){
                                             @media (max-width: 600px) {
                                                 position: relative;
                                                 width: 80%;
-                                                left: 80px;
+                                                left: 75px;
                                                 top: -20px;
                                             };
                                             padding-left: 12px;
                                             font-size: 16px;
                                             font-weight: 500;
-                                            width: 100%;
+                                            width: 80%;
                                             position: relative;
-                                            left: 88px;
+                                            left: 95px;
                                             top: -20px;
                                         `}
                                     >
@@ -264,6 +309,58 @@ function AnimeDetail(){
                                     </lable>
                                 </lable>
                             </div>
+                            {
+                                showCollection ? 
+                                (
+                                    <div
+                                        className={css` 
+                                            @media (max-width: 600px) {
+                                                top: 20px;
+                                                left: 82vw;
+                                            };
+                                            position: absolute;
+                                            float: right;
+                                            top: 20px;
+                                            left: 58vw;
+                                        `}
+                                    >
+                                        <i  
+                                            style={{
+                                                'font-size': "24px",
+                                                'cursor': "pointer"
+                                            }}
+                                            class='fa'
+                                            onClick={()=>handleRemoveCollection(data)}
+                                        >
+                                                &#xf005;
+                                        </i>
+                                    </div>
+                                ) : (
+                                    <div
+                                        className={css` 
+                                            @media (max-width: 600px) {
+                                                top: 20px;
+                                                left: 82vw;
+                                            };
+                                            position: absolute;
+                                            float: right;
+                                            top: 20px;
+                                            left: 58vw;
+                                        `}
+                                    >
+                                        <i  
+                                            style={{
+                                                'font-size': "24px",
+                                                'cursor': "pointer"
+                                            }}
+                                            class='fa'
+                                            onClick={()=>handleAddCollection(data)}
+                                        >
+                                                &#xf006;
+                                        </i>
+                                    </div>
+                                )
+                            }
                             <div
                                 className={css`
                                     @media (max-width: 600px) {

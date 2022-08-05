@@ -9,7 +9,7 @@ function Header(){
     const { dataContext, setDataContext } = useContext(AnimeListContext);
     const [newGenreList, setNewGenreList] = useState([]);
     const [ openFilter, setOpenFilter ] = useState(false);
-    const [ searchValue, setSearchValue ] = useState();
+    const [ searchValue, setSearchValue ] = useState('');
     const { data: genreList, loading: isGenreListLoading } = useQuery(GET_ALL_GENRES);
     useEffect(()=>{
         if(!isGenreListLoading){
@@ -29,7 +29,7 @@ function Header(){
                 genre: genre
             }
         })
-        setSearchValue()
+        setSearchValue('')
     }
 
     const handleOpenFilterbyGenres = () => {
@@ -51,6 +51,12 @@ function Header(){
         setDataContext({
             filter:{}
         })
+    }
+    const handleClearSearch = () => {
+        setDataContext({
+            filter:{}
+        })
+        setSearchValue('')
     }
     return(
         <div
@@ -85,6 +91,9 @@ function Header(){
                     >DaiFlix </label>
                     <div  
                         className={css`
+                            @media (max-width: 600px) {
+                                width: 70%;
+                            };
                             float: right;
                             background: #1a1a1a;
                             font-size: 17px;
@@ -97,23 +106,72 @@ function Header(){
                                 className={css`
                                     @media (max-width: 600px) {
                                         padding: 8px 6px;
-                                        margin: 0px;
+                                        width: 40%;
                                     };
+                                    color: white;
+                                    border-radius: 12px;
+                                    border: 2px solid #DA1212;
+                                    background: #222;
                                     padding: 8px 16px;
+                                    margin: 2px;
+                                    text-decoration: none;
+                                    cursor: pointer;
+                                    &:hover{
+                                        color: white;
+                                        background: #DA1212;
+                                    }
                                 `}
                                 disabled={dataContext === null ? true : false}
-                            type="text" placeholder="Search.." name="search" onChange={(e)=>handleOnChange(e)}/>
+                                type="text"
+                                placeholder="Search.."
+                                name="search"
+                                onChange={(e)=>handleOnChange(e)}
+                                value={searchValue}
+                            />
+                            {console.log(searchValue)}
                             <button
                                 className={css`
-                                    @media (max-width: 600px) {
-                                        padding: 8px 6px;
-                                        margin: 0px;
-                                    };
+                                    color: white;
+                                    border-radius: 12px;
+                                    border: 2px solid #DA1212;
+                                    background: #222;
                                     padding: 8px 16px;
+                                    margin: 2px;
+                                    text-decoration: none;
+                                    cursor: pointer;
+                                    &:hover{
+                                        color: white;
+                                        background: #DA1212;
+                                    }
                                 `}
                                 disabled={dataContext === null ? true : false}
                             id='submit'
-                            onClick={()=>handleSearch()}><i class="fa fa-search"></i></button>
+                            onClick={()=>handleSearch()}><i className="fa fa-search"></i></button>
+                            {
+                                typeof searchValue !== 'undefined' && searchValue !== '' ? (
+                                    <button
+                                        className={css`
+                                            color: white;
+                                            border-radius: 12px;
+                                            border: 2px solid #DA1212;
+                                            background: #222;
+                                            padding: 8px 16px;
+                                            margin: 2px;
+                                            text-decoration: none;
+                                            cursor: pointer;
+                                            &:hover{
+                                                color: white;
+                                                background: #DA1212;
+                                            }
+                                        `}
+                                        disabled={dataContext === null ? true : false}
+                                        id='submit'
+                                        onClick={()=>handleClearSearch()}
+                                    >
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                ) : null
+                            }
                         
                     </div>
                 </nav>

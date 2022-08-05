@@ -24,7 +24,6 @@ function AnimeList(){
             })
         }
         if(dataContext?.filter !== {}){
-            console.log(animeList)
             getListAnimebyPage();
         }
         let temp = [];
@@ -128,8 +127,7 @@ function AnimeList(){
                     >
                         <label>Anime List</label>
                     </div>
-                    {console.log(dataContext?.filter)}
-                        { dataContext?.filter !== {} && typeof dataContext?.filter !== 'undefined' ?
+                        { typeof dataContext?.filter !== 'undefined' && Object.keys(dataContext?.filter).length !== 0?
                             (
                                 typeof dataContext?.filter.search !== 'undefined' ? 
                                     <AnimeListbySearch /> 

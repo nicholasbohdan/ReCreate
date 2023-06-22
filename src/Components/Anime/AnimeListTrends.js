@@ -3,6 +3,7 @@ import { css } from '@emotion/css';
 import React, { useContext } from 'react';
 import { GET_ALL_TREND_ANIME } from '../../actions/anime';
 import { AnimeListContext } from '../../context/Context';
+import { Grid } from '@mui/material';
 // Spy-x-Family-Anya-Forger
 
 function AnimeListTrends(props){
@@ -19,17 +20,26 @@ function AnimeListTrends(props){
         // eslint-disable-next-line
       }, [animeListTrends]);
     return(
-        <div
-            className={css`
-                @media (max-width: 600px) {
-                    width: 100%;
-                };
-                width: 30%;
-                background-color: #1a1a1a;
-            `}
-        >
-            
-            <div
+        <div>
+            <Grid container spacing={2}>
+                {isAnimeListTrendsLoading ? <div>Loading</div> : 
+                animeListTrends.Page.mediaTrends.map((row, key)=>(
+                    <Grid item xs={6}
+                    style={{ textAlign: 'center' }}
+                    >
+                        <img 
+                            className={css`  
+                                float: left;
+                                width: 100%;
+                                height: 240px;
+                            `}
+                        alt=''
+                        src={row.media.coverImage.extraLarge} />
+                        {row.media.title.userPreferred}
+                    </Grid>
+                ))}
+            </Grid>
+            {/* <div
                 className={css`
                     @media (max-width: 600px) {
                         padding: 0px;
@@ -227,7 +237,7 @@ function AnimeListTrends(props){
                         </ul>
                     </ul>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

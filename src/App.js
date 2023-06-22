@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, HashRouter, } from 'react-route
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 import Header from './Components/Header';
 import CollectionList from './Components/Collection/CollectionList';
-import AnimeList from './Components/Anime/AnimeList';
+import AnimeList from './Components/HomePage';
 import AnimeDetail from './Components/Anime/AnimeDetail';
 import CollectionDetail from './Components/Collection/CollectionDetail';
 import { AnimeListContext } from './context/Context';
@@ -25,7 +25,7 @@ function App() {
         <ApolloProvider client={client}>
           <Header />
             <Routes>
-              <Route exact path="/anime-list" element={<AnimeList />} />
+              <Route exact path="/" element={<AnimeList />} />
               <Route path="/detail/:animeId" element={<AnimeDetail />} />
               <Route path="/collection" element={<CollectionList />} />
               <Route path="/collection/detail/:collectionId" element={<CollectionDetail />} />
